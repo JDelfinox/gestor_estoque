@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 
-from .forms import LocalForm
-from .models import Local
+from .forms import CategoriaForm, EmbalagemForm, LocalForm
+from .models import Categoria, Embalagem, Local
 
 
 def inicio(request):
@@ -28,3 +28,98 @@ def adicionar_local(request):
     else:
         form = LocalForm()
     return render(request, 'produtos/adicionar_local.html', {'form': form})
+
+
+def listar_embalagens(request):
+    consulta = request.GET.get('q')
+    sigla = request.GET.get('sigla')
+    embalagens = Embalagem.objects.all()
+    if consulta:
+        embalagens = embalagens.filter(nome__icontains=consulta)
+    if sigla:
+        embalagens = embalagens.filter(sigla=sigla)
+    return render(request, 'produtos/listar_embalagens.html', {'embalagens': embalagens})  # noqa: E501
+
+
+def adicionar_embalagens(request):
+    if request.method == 'POST':
+        form = EmbalagemForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_embalagens')
+    else:
+        form = EmbalagemForm()
+    return render(request, 'produtos/adicionar_embalagens.html', {'form': form})
+
+
+def editar_locais(request, pk):
+    local = Local.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = LocalForm(request.POST, instance=local)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_locais')
+    else:
+        form = LocalForm(instance=local)
+    return render(request, 'produtos/editar_locais.html', {'form': form, 'local': local})
+
+
+def editar_embalagens(request, pk):
+    embalagens = Embalagem.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = EmbalagemForm(request.POST, instance=embalagens)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_embalagens')
+    else:
+        form = EmbalagemForm(instance=embalagens)
+    return render(request, 'produtos/editar_embalagens.html', {'form': form, 'embalagens': embalagens})  # noqa: E501
+
+
+def excluir_locais(request, pk):
+    local = Local.objects.get(pk=pk)
+    local.delete()
+    return redirect('listar_locais')
+
+
+def excluir_embalagens(request, pk):
+    embalagens = Embalagem.objects.get(pk=pk)
+    embalagens.delete()
+    return redirect('listar_embalagens')
+
+
+def listar_categorias(request):
+    consulta = request.GET.get('q')
+    categorias = Categoria.objects.all()
+    if consulta:
+        categorias = categorias.filter(nome__icontains=consulta)
+    return render(request, 'produtos/listar_categorias.html', {'categorias': categorias})  # noqa: E501
+
+
+def adicionar_categorias(request):
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_categorias')
+    else:
+        form = CategoriaForm()
+    return render(request, 'produtos/adicionar_categorias.html', {'form': form})  # noqa: E501
+
+
+def editar_categorias(request, pk):
+    categorias = Categoria.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST, instance=categorias)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_categorias')
+    else:
+        form = CategoriaForm(instance=categorias)
+    return render(request, 'produtos/editar_categorias.html', {'form': form, 'categorias': categorias})  # noqa: E501
+
+
+def excluir_categorias(request, pk):
+    local = Categoria.objects.get(pk=pk)
+    local.delete()
+    return redirect('listar_categorias')
