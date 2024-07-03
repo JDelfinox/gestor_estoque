@@ -48,7 +48,7 @@ class Fornecedor(BaseModel):
 
 
 class Embalagem(BaseModel):
-    name = models.CharField(max_length=50, verbose_name='Nome da embalagem')  # noqa: F811
+    nome = models.CharField(max_length=50, verbose_name='Nome da embalagem')  # noqa: F811
     sigla = models.CharField(max_length=3, verbose_name='Sigla da embalagem')
 
     class Meta:
