@@ -5,7 +5,7 @@ from utils.base_models import BaseModel
 
 class Categoria(BaseModel):
     nome = models.CharField(
-        max_length=100, verbose_name='nome da categoria', unique=True
+        max_length=100, verbose_name='Nome da categoria', unique=True
     )  # noqa: E501
 
     class Meta:
@@ -34,10 +34,10 @@ class Produto(BaseModel):
 
 class Fornecedor(BaseModel):
     nome_social = models.CharField(
-        max_length=100, verbose_name='Razao Social do fornecedor', unique=True
+        max_length=100, verbose_name='Nome Social do Fornecedor', unique=True
     )  # noqa: E501
     nome_fantasia = models.CharField(
-        max_length=100, verbose_name='nome Fantasia do fornecedor'
+        max_length=100, verbose_name='Nome Fantasia do Fornecedor'
     )  # noqa: E501
     produtos = models.ManyToManyField(
         'produtos.Produto', verbose_name='Produtos do Fornecedor'
@@ -92,10 +92,6 @@ class Movimentacao(BaseModel):
 
     class Meta:
         db_table = 'movimentacoes'
-
-    
-    
-    
 
 
 class Local(BaseModel):
