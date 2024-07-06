@@ -20,17 +20,25 @@ from django.urls import path
 from .views import (
     adicionar_categorias,
     adicionar_embalagens,
+    adicionar_fornecedores,
     adicionar_local,
+    adicionar_produtos,
     editar_categorias,
     editar_embalagens,
+    editar_fornecedores,
     editar_locais,
+    editar_produtos,
     excluir_categorias,
     excluir_embalagens,
+    excluir_fornecedores,
     excluir_locais,
+    excluir_produtos,
     inicio,
     listar_categorias,
     listar_embalagens,
+    listar_fornecedores,
     listar_locais,
+    listar_produtos,
 )
 
 urlpatterns = [
@@ -46,5 +54,13 @@ urlpatterns = [
     path('categorias/', listar_categorias, name='listar_categorias'),
     path('categorias/adicionar/', adicionar_categorias, name='adicionar_categorias'),  # noqa: E501
     path('editar_categorias/<pk>/', editar_categorias, name='editar_categorias'),  # noqa: E501
-     path('excluir_categorias/<pk>/', excluir_categorias, name='excluir_categorias'),  # noqa: E501
+    path('excluir_categorias/<pk>/', excluir_categorias, name='excluir_categorias'),  # noqa: E501
+    path('fornecedores/', listar_fornecedores, name='listar_fornecedores'),
+    path('fornecedores/adicionar/', adicionar_fornecedores, name='adicionar_fornecedores'),  # noqa: E501
+    path('editar_fornecedores/<pk>/', editar_fornecedores, name='editar_fornecedores'),  # noqa: E501
+    path('excluir_fornecedores/<pk>/', excluir_fornecedores, name='excluir_fornecedores'),  # noqa: E501
+    path('produtos/', listar_produtos, name='listar_produtos'),
+    path('produtos/adicionar/', adicionar_produtos, name='adicionar_produtos'),  # noqa: E501
+    path('editar_produtos/<pk>/', editar_produtos, name='editar_produtos'),  # noqa: E501
+    path('excluir_produtos/<pk>/', excluir_produtos, name='excluir_produtos'),  # noqa: E501
 ]

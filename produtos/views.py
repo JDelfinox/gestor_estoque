@@ -1,7 +1,13 @@
 from django.shortcuts import redirect, render
 
-from .forms import CategoriaForm, EmbalagemForm, LocalForm
-from .models import Categoria, Embalagem, Local
+from .forms import (
+    CategoriaForm,
+    EmbalagemForm,
+    FornecedorForm,
+    LocalForm,
+    ProdutosForm,
+)
+from .models import Categoria, Embalagem, Fornecedor, Local, Produto
 
 
 def inicio(request):
@@ -123,3 +129,77 @@ def excluir_categorias(request, pk):
     local = Categoria.objects.get(pk=pk)
     local.delete()
     return redirect('listar_categorias')
+
+
+def listar_fornecedores(request):
+    consulta = request.GET.get('q')
+    fornecedores = Fornecedor.objects.all()
+    if consulta:
+        fornecedores = fornecedores.filter(nome__icontains=consulta)
+    return render(request, 'produtos/listar_fornecedores.html', {'fornecedores': fornecedores})  # noqa: E501
+
+
+def adicionar_fornecedores(request):
+    if request.method == 'POST':
+        form = FornecedorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_fornecedores')
+    else:
+        form = FornecedorForm()
+    return render(request, 'produtos/adicionar_fornecedores.html', {'form': form})  # noqa: E501
+
+
+def editar_fornecedores(request, pk):
+    fornecedores = Fornecedor.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = FornecedorForm(request.POST, instance=fornecedores)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_fornecedores')
+    else:
+        form = FornecedorForm(instance=fornecedores)
+    return render(request, 'produtos/editar_categorias.html', {'form': form, 'fornecedores': fornecedores})  # noqa: E501
+
+
+def excluir_fornecedores(request, pk):
+    local = Fornecedor.objects.get(pk=pk)
+    local.delete()
+    return redirect('listar_fornecedores')
+
+
+def listar_produtos(request):
+    consulta = request.GET.get('q')
+    produtos = Produto.objects.all()
+    if consulta:
+        produtos = produtos.filter(nome__icontains=consulta)
+    return render(request, 'produtos/listar_produtos.html', {'produtos': produtos})  # noqa: E501
+
+
+def adicionar_produtos(request):
+    if request.method == 'POST':
+        form = ProdutosForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_produtos')
+    else:
+        form = ProdutosForm()
+    return render(request, 'produtos/adicionar_produtos.html', {'form': form})  # noqa: E501
+
+
+def editar_produtos(request, pk):
+    produtos = Produto.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = ProdutosForm(request.POST, instance=produtos)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_produtos')
+    else:
+        form = ProdutosForm(instance=produtos)
+    return render(request, 'produtos/editar_produtos.html', {'form': form, 'fornecedores': produtos})  # noqa: E501
+
+
+def excluir_produtos(request, pk):
+    local = Produto.objects.get(pk=pk)
+    local.delete()
+    return redirect('listar_produtos')
