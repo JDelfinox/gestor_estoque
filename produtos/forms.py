@@ -1,7 +1,5 @@
 from django import forms
 
-import produtos
-
 from .models import Categoria, Embalagem, Fornecedor, Local, Produto
 
 
@@ -24,12 +22,23 @@ class CategoriaForm(forms.ModelForm):
 
 
 class FornecedorForm(forms.ModelForm):
+    produtos = forms.ModelMultipleChoiceField(
+        queryset=Produto.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+        )
     class Meta:
         model = Fornecedor
         fields = ['nome_social', 'nome_fantasia', 'produtos']
-
+    
 
 class ProdutosForm(forms.ModelForm):
+    fornecedores = forms.ModelMultipleChoiceField(
+        queryset=Fornecedor.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+        )
+
     class Meta:
         model = Produto
-        fields = ['nome', 'categoria', 'embalagens', 'estoque_minimo', 'estoque_maximo']  # noqa: E501
+        fields = ['nome', 'categoria', 'embalagens', 'estoque_minimo', 'estoque_maximo','fornecedores']  # noqa: E501

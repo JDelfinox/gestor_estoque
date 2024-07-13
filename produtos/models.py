@@ -11,6 +11,9 @@ class Categoria(BaseModel):
     class Meta:
         db_table = 'categorias'
 
+    def __str__(self) -> str:
+        return f"{self.nome}"
+
 
 class Produto(BaseModel):
     nome = models.CharField(max_length=100, verbose_name='nome do produto')
@@ -53,6 +56,9 @@ class Embalagem(BaseModel):
 
     class Meta:
         db_table = 'embalagens'
+
+    def __str__(self) -> str:
+        return f"{self.nome} - {self.sigla}"
 
 
 class Movimentacao(BaseModel):
